@@ -22,7 +22,6 @@
 3. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit**.
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 4. Back on the **Create cluster** page, click **Launch cluster**.
-   ![Launch cluster](screenshots/04b-launch-cluster.png)
 
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
