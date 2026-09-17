@@ -13,22 +13,17 @@
 
 ---
 
-## 2. Open the Default Environment
+## 2. Create a Cluster
 
 1. On the **Environments** page, open the `default` environment that came with your account.
    ![Default environment](screenshots/02b-environment.png)
+2. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
+   ![Create cluster](screenshots/03-cluster-create.png)
+3. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit** and launch the cluster.
+   <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
 > [!NOTE]
 > Confluent Cloud automatically creates a `default` environment for every account. We'll create all of this workshop's resources — cluster, connectors, and Flink — inside it.
-
----
-
-## 3. Create a Cluster
-
-1. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
-   ![Create cluster](screenshots/03-cluster-create.png)
-2. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit** and launch the cluster.
-   <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
@@ -37,7 +32,7 @@
 
 ---
 
-## 4. Create the Datagen Connectors
+## 3. Create the Datagen Connectors
 
 1. In your cluster, go to **Connectors → Datagen Source**, and create one using the **Users** quickstart template.
    ![Datagen connector - Users template](screenshots/05-connector-users.png)
@@ -48,7 +43,7 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 ---
 
-## 5. Explore the Data
+## 4. Explore the Data
 
 1. Open **Topics → users** and view live messages.
    ![Users topic messages](screenshots/07-topic-users.png)
