@@ -127,7 +127,6 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
      ts,
      trade_count                AS current_count,
      forecast[1].forecast_value AS forecast_count,
-     forecast[1].lower_bound    AS lower_bound,
      forecast[1].upper_bound    AS upper_bound
    FROM (
      SELECT
@@ -156,7 +155,7 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 2. Inspect the output — each stock's current vs. forecasted trade count, ranked by where activity is heading:
 
    ```sql
-   SELECT symbol, current_count, forecast_count, lower_bound, upper_bound
+   SELECT symbol, current_count, forecast_count, upper_bound
    FROM trades_forecast
    ORDER BY forecast_count DESC
    LIMIT 20;
