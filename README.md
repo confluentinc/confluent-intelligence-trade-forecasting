@@ -25,16 +25,23 @@
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
-4. Back on the **Create cluster** page, click **Launch cluster**.
+4. Back on the **Create cluster** page, click **Launch cluster** — it shows **Running** once ready.
+   ![Cluster running](screenshots/04c-cluster-running.png)
 
 ---
 
 ## 3. Create the Datagen Connectors
 
-1. In your cluster, go to **Connectors → Datagen Source**, and create one using the **Users** quickstart template.
-   ![Datagen connector - Users template](screenshots/05-connector-users.png)
-2. Create a second Datagen Source connector using the **Stock Trades** quickstart template.
-   ![Datagen connector - Stock Trades template](screenshots/06-connector-stock-trades.png)
+1. From your cluster, open **Connectors** and click **Add Connector**.
+   ![Connectors page](screenshots/05a-connectors-page.png)
+2. Choose the **Sample Data** (Datagen Source) connector and click **Get started**.
+   ![Sample Data connector](screenshots/05b-sample-data-plugin.png)
+3. Select the **Users** template — it writes to the `sample_data_users` topic — then click **Launch**.
+   ![Launch Users sample data](screenshots/05-connector-users.png)
+4. Add another connector the same way, select the **Stock trades** template — it writes to `sample_data_stock_trades` — then click **Launch**.
+   ![Launch Stock trades sample data](screenshots/06-connector-stock-trades.png)
+5. Wait until both connectors show **Running**.
+   ![Both connectors running](screenshots/06b-connectors-running.png)
 
 Both templates generate a `userid` in the same `User_1`–`User_9` range — that's what makes them joinable in the next lab.
 
@@ -42,9 +49,9 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 ## 4. Explore the Data
 
-1. Open **Topics → users** and view live messages.
+1. Open **Topics → sample_data_users** and view live messages.
    ![Users topic messages](screenshots/07-topic-users.png)
-2. Open **Topics → stock_trades** and view live messages — note the shared `userid` field.
+2. Open **Topics → sample_data_stock_trades** and view live messages — note the shared `userid` field.
    ![Stock trades topic messages](screenshots/08-topic-stock-trades.png)
 
 ---
@@ -53,7 +60,7 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 1. Open **Flink → SQL Workspace** (create a compute pool if prompted).
    ![Flink SQL workspace](screenshots/09-flink-workspace.png)
-2. `users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
+2. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
 
    ```sql
    CREATE TABLE users_keyed (
@@ -64,7 +71,7 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
    );
 
    INSERT INTO users_keyed
-   SELECT userid, regionid, gender FROM users;
+   SELECT userid, regionid, gender FROM sample_data_users;
    ```
 
 3. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
@@ -89,7 +96,7 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
      t.price,
      u.regionid,
      u.gender
-   FROM stock_trades t
+   FROM sample_data_stock_trades t
    JOIN users_keyed FOR SYSTEM_TIME AS OF t.`$rowtime` AS u
      ON t.userid = u.userid;
    ```
