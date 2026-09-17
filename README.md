@@ -125,10 +125,10 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    SELECT
      window_start,
      symbol,
-     forecast.actual_value,
-     forecast.forecast_value,
-     forecast.lower_bound,
-     forecast.upper_bound
+     (forecast).actual_value AS actual_value,
+     (forecast).forecast_value AS forecast_value,
+     (forecast).lower_bound AS lower_bound,
+     (forecast).upper_bound AS upper_bound
    FROM (
      SELECT
        window_start,
