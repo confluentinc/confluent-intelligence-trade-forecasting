@@ -18,8 +18,10 @@
 1. On the **Environments** page, open the `default` environment that came with your account.
    ![Default environment](screenshots/02b-environment.png)
 2. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
+   
    ![Create cluster](screenshots/03-cluster-create.png)
 3. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit**.
+   
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
 > [!TIP]
@@ -52,7 +54,7 @@
 
 ---
 
-## Lab 2 — Step 1: Flink Join
+### Step 1: Enrich Live Trades with Customer Context
 
 1. [Open Flink](https://confluent.cloud/go/flink), select the **default** environment, and click **Continue**.
 
