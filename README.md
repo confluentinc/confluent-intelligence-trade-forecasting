@@ -12,7 +12,6 @@
 ## 1. Sign Up
 
 1. Go to `confluent.cloud/signup` and create an account with your email.
-   ![Sign up screen](screenshots/01-signup.png)
 2. Verify your email and log in to the Confluent Cloud console.
 
 ---
