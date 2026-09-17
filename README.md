@@ -13,10 +13,10 @@
 
 ---
 
-## 2. Create an Environment
+## 2. Open the Default Environment
 
-1. Open the **Environments** page and click **Add cloud environment** (a new account already has a `default` environment you can use instead).
-   ![Create environment](screenshots/02b-environment.png)
+1. On the **Environments** page, open the `default` environment that came with your account.
+   ![Default environment](screenshots/02b-environment.png)
 
 > Reference: [Manage environments on Confluent Cloud](https://docs.confluent.io/cloud/current/security/access-control/hierarchy/cloud-environments.html)
 
