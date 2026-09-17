@@ -172,3 +172,23 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    A `forecast_count` above `current_count` means that stock is **heating up**.
 
    <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
+
+---
+
+## Cleanup
+
+Tear everything down so nothing keeps running against your credit.
+
+1. In the SQL workspace, drop the Flink materialized tables (this stops their continuous statements):
+
+   ```sql
+   DROP TABLE trades_forecast;
+   DROP TABLE trades_enriched;
+   DROP TABLE users_keyed;
+   ```
+2. Delete both **Sample Data** connectors from **Connectors**.
+3. Delete the Flink **compute pool** (Flink → Compute pools → ⋮ → Delete).
+4. Delete the **cluster** (Cluster settings → Delete cluster) — this removes all remaining topics.
+
+> [!NOTE]
+> On the free trial you won't be charged, but tearing down stops the connectors and Flink statements from consuming your $400 credit.
