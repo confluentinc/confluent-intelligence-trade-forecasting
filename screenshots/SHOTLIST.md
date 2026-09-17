@@ -10,10 +10,10 @@ README references these files but they don't exist yet — capture each and drop
 | `03-cluster-create.png` | Provided — Create cluster page with default Standard / AWS / us-east-2 |
 | `04-payment-info.png` | Provided — Enter payment information screen |
 | `05-connector-users.png` | Datagen Source config screen with **Users** quickstart selected |
-| `06-connector-pageviews.png` | Datagen Source config screen with **Pageviews** quickstart selected |
+| `06-connector-stock-trades.png` | Datagen Source config screen with **Stock Trades** quickstart selected |
 | `07-topic-users.png` | Topic viewer showing live `users` messages |
-| `08-topic-pageviews.png` | Topic viewer showing live `pageviews` messages |
+| `08-topic-stock-trades.png` | Topic viewer showing live `stock_trades` messages |
 | `09-flink-workspace.png` | Flink SQL Workspace, empty/ready state |
-| `10-flink-join-result.png` | Messages in the `pageviews_enriched` topic (join output) |
-| `11-flink-windowed-counts.png` | Result grid of `pageviews_windowed` |
+| `10-flink-join-result.png` | Messages in the `trades_enriched` topic (join output) |
+| `11-flink-windowed-counts.png` | Result grid of `trades_windowed` |
 | `12-flink-forecast-result.png` | Result grid of the `ML_FORECAST` query |

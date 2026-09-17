@@ -1,6 +1,6 @@
 # Real-Time Join & Forecasting with Confluent Cloud
 
-**Use case:** picture a retail website during a flash sale. Pageviews are streaming in constantly, and the team watching it wants two things live: who's browsing and where they're from (a **join**), and a heads-up before traffic spikes so they can scale up before the site slows down (a **forecast**). In this lab you'll build exactly that — entirely inside Confluent Cloud, no Terraform, no local setup. Total time: ~45–50 minutes, including sign-up.
+**Use case:** picture an online trading platform. Stock trades are streaming in constantly, and the team wants two things live: who's trading and where they're from (a **join**), and a heads-up before trading volume spikes so they can scale capacity ahead of the surge (a **forecast**). In this lab you'll build exactly that — entirely inside Confluent Cloud, no Terraform, no local setup. Total time: ~45–50 minutes, including sign-up.
 
 ---
 
@@ -33,8 +33,8 @@
 
 1. In your cluster, go to **Connectors → Datagen Source**, and create one using the **Users** quickstart template.
    ![Datagen connector - Users template](screenshots/05-connector-users.png)
-2. Create a second Datagen Source connector using the **Pageviews** quickstart template.
-   ![Datagen connector - Pageviews template](screenshots/06-connector-pageviews.png)
+2. Create a second Datagen Source connector using the **Stock Trades** quickstart template.
+   ![Datagen connector - Stock Trades template](screenshots/06-connector-stock-trades.png)
 
 Both templates generate a `userid` in the same `User_1`–`User_9` range — that's what makes them joinable in the next lab.
 
@@ -44,8 +44,8 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 1. Open **Topics → users** and view live messages.
    ![Users topic messages](screenshots/07-topic-users.png)
-2. Open **Topics → pageviews** and view live messages — note the shared `userid` field.
-   ![Pageviews topic messages](screenshots/08-topic-pageviews.png)
+2. Open **Topics → stock_trades** and view live messages — note the shared `userid` field.
+   ![Stock trades topic messages](screenshots/08-topic-stock-trades.png)
 
 ---
 
@@ -67,68 +67,74 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
    SELECT userid, regionid, gender FROM users;
    ```
 
-3. Enrich each pageview with its user's region and gender using a temporal join, and store the result to a `pageviews_enriched` topic that the next lab will forecast on:
+3. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
    ```sql
-   CREATE TABLE pageviews_enriched (
+   CREATE TABLE trades_enriched (
      userid STRING,
-     pageid STRING,
+     symbol STRING,
+     side STRING,
+     quantity INT,
+     price INT,
      regionid STRING,
      gender STRING
    );
 
-   INSERT INTO pageviews_enriched
+   INSERT INTO trades_enriched
    SELECT
-     p.userid,
-     p.pageid,
+     t.userid,
+     t.symbol,
+     t.side,
+     t.quantity,
+     t.price,
      u.regionid,
      u.gender
-   FROM pageviews p
-   JOIN users_keyed FOR SYSTEM_TIME AS OF p.`$rowtime` AS u
-     ON p.userid = u.userid;
+   FROM stock_trades t
+   JOIN users_keyed FOR SYSTEM_TIME AS OF t.`$rowtime` AS u
+     ON t.userid = u.userid;
    ```
 
-   ![Enriched pageviews topic](screenshots/10-flink-join-result.png)
+   ![Enriched trades topic](screenshots/10-flink-join-result.png)
 
 ---
 
 ## Lab 2 — Step 2: Flink Built-in Forecasting Model
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn the `pageviews_enriched` stream from Step 1 into a windowed count with a watermark it can order by:
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn the `trades_enriched` stream from Step 1 into a windowed volume with a watermark it can order by:
 
-1. Create a windowed-count table and stream 10-second pageview volumes into it:
+1. Create a windowed-volume table and stream 10-second trading volumes (shares traded) into it:
 
    ```sql
-   CREATE TABLE pageviews_windowed (
+   CREATE TABLE trades_windowed (
      window_start TIMESTAMP(3) NOT NULL,
-     pageview_count BIGINT,
+     total_quantity BIGINT,
      WATERMARK FOR window_start AS window_start
    );
 
-   INSERT INTO pageviews_windowed
-   SELECT window_start, COUNT(*) AS pageview_count
+   INSERT INTO trades_windowed
+   SELECT window_start, SUM(quantity) AS total_quantity
    FROM TABLE(
-     TUMBLE(TABLE pageviews_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+     TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
    )
    GROUP BY window_start, window_end;
    ```
 
-   ![Windowed pageview counts](screenshots/11-flink-windowed-counts.png)
+   ![Windowed trade volume](screenshots/11-flink-windowed-counts.png)
 
-2. Run `ML_FORECAST` over that time series to project the next 5 windows of pageview volume (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
+2. Run `ML_FORECAST` over that time series to project the next 5 windows of trading volume (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
 
    ```sql
    SELECT
      window_start,
      ML_FORECAST(
-       CAST(pageview_count AS DOUBLE),
+       CAST(total_quantity AS DOUBLE),
        window_start,
        JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
      ) OVER (
        ORDER BY window_start
        RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
      ) AS forecast
-   FROM pageviews_windowed;
+   FROM trades_windowed;
    ```
 
    ![Forecast output](screenshots/12-flink-forecast-result.png)
