@@ -56,7 +56,7 @@
 
 ## Lab 2: Enrich & Forecast Live Trades with Flink
 
-With trades and customer data now streaming, use Flink SQL to answer the two business questions from the use case: **who is trading and from where** (enrichment), and **how much volume is coming next** (forecast) — both computed continuously on the live streams.
+With trades and customer data now streaming, use Flink SQL to answer the two business questions from the use case: **who is trading and from where** (enrichment), and **which stocks are heating up** (forecast) — both computed continuously on the live streams.
 
 ### Step 1: Enrich Live Trades with Customer Context
 
@@ -109,9 +109,9 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 
 ---
 
-### Step 2: Forecast Trading-Volume Spikes
+### Step 2: Forecast Trades per Stock
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into 10-second trading volumes and forecast them. The inner query tumbles the trades into per-window `total_quantity` (shares traded), and `ML_FORECAST` projects the next 5 windows (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows).
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into a per-stock trade count every 10 seconds and forecast each symbol on its own. The inner query tumbles trades into `trade_count` per `symbol`, and `ML_FORECAST` — partitioned by `symbol` — projects where each stock's activity is heading (`minTrainingSize` is set to 10, applied per symbol, so a forecast appears once a stock has ~10 windows of history).
 
 1. Create the forecast as a materialized table so the projections persist to a topic:
 
@@ -119,24 +119,26 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    CREATE MATERIALIZED TABLE trades_forecast AS
    SELECT
      window_start,
+     symbol,
      ML_FORECAST(
-       CAST(total_quantity AS DOUBLE),
+       CAST(trade_count AS DOUBLE),
        window_start,
        JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
      ) OVER (
+       PARTITION BY symbol
        ORDER BY window_time
        RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
      ) AS forecast
    FROM (
-     SELECT window_start, window_time, SUM(quantity) AS total_quantity
+     SELECT window_start, window_time, symbol, COUNT(*) AS trade_count
      FROM TABLE(
        TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
      )
-     GROUP BY window_start, window_end, window_time
+     GROUP BY window_start, window_end, window_time, symbol
    );
    ```
 
-2. Inspect the output to see the forecasted trading volume per window:
+2. Inspect the output to see the forecasted trade count for each stock:
 
    ```sql
    SELECT * FROM trades_forecast;
