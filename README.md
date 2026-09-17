@@ -43,6 +43,7 @@
 5. Wait until both connectors show **Running**.
    ![Both connectors running](screenshots/06b-connectors-running.png)
 6. From the left nav, open **Topics**.
+
    <img src="screenshots/06c-topics-nav.png" width="180" alt="Topics nav">
 7. Click **sample_data_users**, then open the **Messages** tab to view live user records.
    ![Users topic messages](screenshots/07-topic-users.png)
