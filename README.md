@@ -1,6 +1,6 @@
 # Real-Time Join & Forecasting with Confluent Cloud
 
-**Use case:** you'll stand up two live data streams, join them in real time with Flink SQL, then use Flink's built-in `ML_FORECAST` function to predict future trends — all inside Confluent Cloud, no Terraform, no local setup. Total time: ~45–50 minutes, including sign-up.
+**Use case:** picture a retail website during a flash sale. Pageviews are streaming in constantly, and the team watching it wants two things live: who's browsing and where they're from (a **join**), and a heads-up before traffic spikes so they can scale up before the site slows down (a **forecast**). In this lab you'll build exactly that — entirely inside Confluent Cloud, no Terraform, no local setup. Total time: ~45–50 minutes, including sign-up.
 
 ---
 
