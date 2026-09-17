@@ -125,25 +125,34 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    SELECT
      window_start,
      symbol,
-     ML_FORECAST(
-       CAST(trade_count AS DOUBLE),
-       window_start,
-       JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
-     ) OVER (
-       PARTITION BY symbol
-       ORDER BY window_time
-       RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-     ) AS forecast
+     forecast.actual_value,
+     forecast.forecast_value,
+     forecast.lower_bound,
+     forecast.upper_bound
    FROM (
-     SELECT window_start, window_time, symbol, COUNT(*) AS trade_count
-     FROM TABLE(
-       TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+     SELECT
+       window_start,
+       symbol,
+       ML_FORECAST(
+         CAST(trade_count AS DOUBLE),
+         window_start,
+         JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
+       ) OVER (
+         PARTITION BY symbol
+         ORDER BY window_time
+         RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+       ) AS forecast
+     FROM (
+       SELECT window_start, window_time, symbol, COUNT(*) AS trade_count
+       FROM TABLE(
+         TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+       )
+       GROUP BY window_start, window_end, window_time, symbol
      )
-     GROUP BY window_start, window_end, window_time, symbol
    );
    ```
 
-2. Inspect the output to see the forecasted trade count for each stock:
+2. Inspect the output to see each stock's actual vs. forecasted trade count, with confidence bounds:
 
    ```sql
    SELECT * FROM trades_forecast;
