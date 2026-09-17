@@ -28,8 +28,6 @@
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
-> Reference: [Create a Kafka cluster in Confluent Cloud](https://docs.confluent.io/cloud/current/clusters/create-cluster.html)
-
 ---
 
 ## 3. Create the Datagen Connectors
