@@ -22,4 +22,4 @@ README references these files but they don't exist yet — capture each and drop
 | `09b-compute-pool.png` | Provided — Flink Compute pools tab with SQL Workspace button |
 | `09c-workspace-catalog.png` | Provided — workspace Use catalog / Use database selector |
 | `10b-trades-enriched-query.png` | Provided — `SELECT * FROM trades_enriched` result grid |
-| `12-flink-forecast-result.png` | Result grid of the combined windowing + `ML_FORECAST` query |
+| `12-flink-forecast-result.png` | Result grid of `SELECT * FROM trades_forecast` |

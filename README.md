@@ -111,26 +111,35 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 
 ### Step 2: Forecast Trading-Volume Spikes
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into 10-second trading volumes and forecast them in a single statement. The inner query tumbles the trades into per-window `total_quantity` (shares traded), and `ML_FORECAST` projects the next 5 windows (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into 10-second trading volumes and forecast them. The inner query tumbles the trades into per-window `total_quantity` (shares traded), and `ML_FORECAST` projects the next 5 windows (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows).
 
-```sql
-SELECT
-  window_start,
-  ML_FORECAST(
-    CAST(total_quantity AS DOUBLE),
-    window_start,
-    JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
-  ) OVER (
-    ORDER BY window_time
-    RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-  ) AS forecast
-FROM (
-  SELECT window_start, window_time, SUM(quantity) AS total_quantity
-  FROM TABLE(
-    TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
-  )
-  GROUP BY window_start, window_end, window_time
-);
-```
+1. Create the forecast as a materialized table so the projections persist to a topic:
 
-<img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
+   ```sql
+   CREATE MATERIALIZED TABLE trades_forecast AS
+   SELECT
+     window_start,
+     ML_FORECAST(
+       CAST(total_quantity AS DOUBLE),
+       window_start,
+       JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
+     ) OVER (
+       ORDER BY window_time
+       RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+     ) AS forecast
+   FROM (
+     SELECT window_start, window_time, SUM(quantity) AS total_quantity
+     FROM TABLE(
+       TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+     )
+     GROUP BY window_start, window_end, window_time
+   );
+   ```
+
+2. Inspect the output to see the forecasted trading volume per window:
+
+   ```sql
+   SELECT * FROM trades_forecast;
+   ```
+
+   <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
