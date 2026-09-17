@@ -193,8 +193,7 @@ Tear everything down so nothing keeps running against your credit.
    DROP MATERIALIZED TABLE users_keyed;
    ```
 2. Delete both **Sample Data** connectors from **Connectors**.
-3. Delete the Flink **compute pool** (Flink → Compute pools → ⋮ → Delete).
-4. Delete the **cluster** (Cluster settings → Delete cluster) — this removes all remaining topics.
+3. Delete the **cluster** (Cluster settings → Delete cluster) — this removes all remaining topics.
 
 > [!NOTE]
 > On the free trial you won't be charged, but tearing down stops the connectors and Flink statements from consuming your $400 credit.
