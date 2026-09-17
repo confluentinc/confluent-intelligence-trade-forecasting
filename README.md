@@ -26,8 +26,8 @@
 
 1. On the **Create cluster** page, choose the **Basic** cluster type, select cloud provider **AWS** and region **us-east-1**, then click **Continue**.
    ![Create cluster](screenshots/03-cluster-create.png)
-2. When prompted, enter your payment information to activate the account, then launch the cluster.
-   ![Enter payment information](screenshots/04-payment-info.png)
+2. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit** and launch the cluster.
+   <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
