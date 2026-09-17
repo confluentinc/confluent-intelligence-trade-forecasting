@@ -41,6 +41,8 @@
 
 ## 3. Generate Data Sources
 
+You'll stand up two **Sample Data** (Datagen) connectors that stream mock records into Kafka topics: **Users** (customer profiles — `userid`, region, gender) and **Stock trades** (live trades — `symbol`, side, quantity, price, and the trader's `userid`). They share `userid`, which is what lets you join them in the next lab.
+
 1. From your cluster, open **Connectors** and click **Add Connector**.
    ![Connectors page](screenshots/05a-connectors-page.png)
 2. Choose the **Sample Data** (Datagen Source) connector and click **Get started**.
