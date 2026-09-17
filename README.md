@@ -54,6 +54,10 @@
 
 ---
 
+## Lab 2: Enrich & Forecast Live Trades with Flink
+
+With trades and customer data now streaming, use Flink SQL to answer the two business questions from the use case: **who is trading and from where** (enrichment), and **how much volume is coming next** (forecast) — both computed continuously on the live streams.
+
 ### Step 1: Enrich Live Trades with Customer Context
 
 1. [Open Flink](https://confluent.cloud/go/flink), select the **default** environment, and click **Continue**.
@@ -99,7 +103,7 @@
 
 ---
 
-## Lab 2 — Step 2: Flink Built-in Forecasting Model
+### Step 2: Forecast Trading-Volume Spikes
 
 `ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into 10-second trading volumes and forecast them in a single statement. The inner query tumbles the trades into per-window `total_quantity` (shares traded), and `ML_FORECAST` projects the next 5 windows (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
 
