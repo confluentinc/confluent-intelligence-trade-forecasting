@@ -13,16 +13,25 @@
 
 ---
 
-## 2. Create a Cluster
+## 2. Create an Environment
 
-1. Click **Create cluster**, choose the **Basic** cluster type.
+1. Open the **Environments** page and click **Add cloud environment** (a new account already has a `default` environment you can use instead).
+   ![Create environment](screenshots/02b-environment.png)
+
+> Reference: [Manage environments on Confluent Cloud](https://docs.confluent.io/cloud/current/security/access-control/hierarchy/cloud-environments.html)
+
+---
+
+## 3. Create a Cluster
+
+1. Inside your environment, click **Create cluster**, choose the **Basic** cluster type.
    ![Choose cluster type](screenshots/03-cluster-type.png)
 2. Select cloud provider **AWS** and region **us-east-1**, then launch it.
    ![Select AWS us-east-1](screenshots/04-cluster-region.png)
 
 ---
 
-## 3. Create the Datagen Connectors
+## 4. Create the Datagen Connectors
 
 1. In your cluster, go to **Connectors → Datagen Source**, and create one using the **Users** quickstart template.
    ![Datagen connector - Users template](screenshots/05-connector-users.png)
@@ -33,7 +42,7 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 ---
 
-## 4. Explore the Data
+## 5. Explore the Data
 
 1. Open **Topics → users** and view live messages.
    ![Users topic messages](screenshots/07-topic-users.png)
