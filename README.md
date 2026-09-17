@@ -61,7 +61,7 @@
    <img src="screenshots/09b-compute-pool.png" width="600" alt="Flink compute pool">
 3. In the workspace, set **Use catalog** to `default` and **Use database** to `cluster_0` so your topics resolve as tables.
    <img src="screenshots/09c-workspace-catalog.png" width="600" alt="Set catalog and database">
-4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
+4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user using a [materialized table](https://docs.confluent.io/cloud/current/flink/reference/statements/create-materialized-table.html):
 
    ```sql
    CREATE MATERIALIZED TABLE users_keyed (
@@ -72,6 +72,9 @@
    ) AS
    SELECT userid, regionid, gender FROM sample_data_users;
    ```
+
+   > [!TIP]
+   > A **materialized table** bundles a table and its continuously-running query into one object — define it once and Flink keeps it up to date, with no separate `INSERT INTO` job to manage.
 
 5. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
