@@ -50,17 +50,22 @@ You'll stand up two **Sample Data** (Datagen) connectors that stream mock record
 2. Choose the **Sample Data** (Datagen Source) connector and click **Get started**.
    ![Sample Data connector](screenshots/05b-sample-data-plugin.png)
 3. Select the **Users** template — it writes to the `sample_data_users` topic — then click **Launch**.
+   
    <img src="screenshots/05-connector-users.png" width="420" alt="Launch Users sample data">
 4. Add another connector the same way, select the **Stock trades** template — it writes to `sample_data_stock_trades` — then click **Launch**.
+  
    <img src="screenshots/06-connector-stock-trades.png" width="420" alt="Launch Stock trades sample data">
 5. Wait until both connectors show **Running**.
+   
    ![Both connectors running](screenshots/06b-connectors-running.png)
 6. From the left nav, open **Topics**.
 
    <img src="screenshots/06c-topics-nav.png" width="180" alt="Topics nav">
 7. Click **sample_data_users**, then open the **Messages** tab to view live user records.
+   
    ![Users topic messages](screenshots/07-topic-users.png)
 8. Click **sample_data_stock_trades**, open the **Messages** tab, and note the shared `userid` field.
+   
    ![Stock trades topic messages](screenshots/08-topic-stock-trades.png)
 
 ---
@@ -75,8 +80,10 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 
    <img src="screenshots/09-flink-navigate.png" width="420" alt="Navigate to Flink compute pools">
 2. On the **Compute pools** tab, click **SQL Workspace** on the default pool (created for you automatically).
+  
    <img src="screenshots/09b-compute-pool.png" width="600" alt="Flink compute pool">
 3. In the workspace, set **Use catalog** to `default` and **Use database** to `cluster_0` so your topics resolve as tables.
+   
    <img src="screenshots/09c-workspace-catalog.png" width="600" alt="Set catalog and database">
 4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user using a [materialized table](https://docs.confluent.io/cloud/current/flink/reference/statements/create-materialized-table.html):
 
