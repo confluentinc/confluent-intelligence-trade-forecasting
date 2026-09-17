@@ -71,9 +71,17 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
    SELECT userid, regionid, gender FROM users;
    ```
 
-3. Enrich each pageview with its user's region and gender using a temporal join:
+3. Enrich each pageview with its user's region and gender using a temporal join, and store the result to a `pageviews_enriched` topic that the next lab will forecast on:
 
    ```sql
+   CREATE TABLE pageviews_enriched (
+     userid STRING,
+     pageid STRING,
+     regionid STRING,
+     gender STRING
+   );
+
+   INSERT INTO pageviews_enriched
    SELECT
      p.userid,
      p.pageid,
@@ -84,13 +92,13 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
      ON p.userid = u.userid;
    ```
 
-   ![Join query results](screenshots/10-flink-join-result.png)
+   ![Enriched pageviews topic](screenshots/10-flink-join-result.png)
 
 ---
 
 ## Lab 2 — Step 2: Flink Built-in Forecasting Model
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn raw pageviews into a windowed count with a watermark it can order by:
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn the `pageviews_enriched` stream from Step 1 into a windowed count with a watermark it can order by:
 
 1. Create a windowed-count table and stream 10-second pageview volumes into it:
 
@@ -104,7 +112,7 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
    INSERT INTO pageviews_windowed
    SELECT window_start, COUNT(*) AS pageview_count
    FROM TABLE(
-     TUMBLE(TABLE pageviews, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+     TUMBLE(TABLE pageviews_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
    )
    GROUP BY window_start, window_end;
    ```

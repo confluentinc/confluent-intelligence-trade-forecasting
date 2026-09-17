@@ -14,6 +14,6 @@ README references these files but they don't exist yet — capture each and drop
 | `07-topic-users.png` | Topic viewer showing live `users` messages |
 | `08-topic-pageviews.png` | Topic viewer showing live `pageviews` messages |
 | `09-flink-workspace.png` | Flink SQL Workspace, empty/ready state |
-| `10-flink-join-result.png` | Result grid of the join query |
-| `11-flink-windowed-counts.png` | Result grid of `pageviews_per_minute` |
+| `10-flink-join-result.png` | Messages in the `pageviews_enriched` topic (join output) |
+| `11-flink-windowed-counts.png` | Result grid of `pageviews_windowed` |
 | `12-flink-forecast-result.png` | Result grid of the `ML_FORECAST` query |
