@@ -161,4 +161,11 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    LIMIT 20;
    ```
 
+   Each row is one stock, and *count* means **trades in a 10-second window**:
+   - **`current_count`** — trades that stock had in the latest window (what just happened).
+   - **`forecast_count`** — trades the model predicts for its next window.
+   - **`upper_bound`** — top of the confidence range on that prediction.
+
+   A `forecast_count` climbing above `current_count` means that stock is **heating up** — ordering by `forecast_count DESC` surfaces the stocks about to get busiest.
+
    <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
