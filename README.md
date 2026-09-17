@@ -24,7 +24,6 @@
 ## 2. Create a Cluster
 
 1. On the [**Environments** page](https://confluent.cloud/go/environments), open the `default` environment that came with your account.
-   ![Default environment](screenshots/02b-environment.png)
 2. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
    
    ![Create cluster](screenshots/03-cluster-create.png)

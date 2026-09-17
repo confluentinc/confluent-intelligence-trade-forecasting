@@ -4,7 +4,6 @@ README references these files but they don't exist yet — capture each and drop
 
 | File | What to capture |
 |---|---|
-| `02b-environment.png` | Environments page showing the `default` environment opened |
 | `03-cluster-create.png` | Provided — Create cluster page with default Standard / AWS / us-east-2 |
 | `04-payment-info.png` | Provided — Enter payment information screen |
 | `04c-cluster-running.png` | Provided — cluster overview showing Running |
