@@ -4,7 +4,8 @@
 
 **Why it matters:** forecasting lets the platform get ahead of a surge — provision capacity, alert users, or flag manipulation *before* it peaks — instead of reacting once it's already over.
 
-Total time: ~45–50 minutes, including sign-up.
+> [!NOTE]
+> Total time: ~45–50 minutes, including sign-up.
 
 ---
 
