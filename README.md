@@ -64,31 +64,19 @@
 4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
 
    ```sql
-   CREATE TABLE users_keyed (
-     userid STRING,
+   CREATE MATERIALIZED TABLE users_keyed (
+     userid STRING NOT NULL,
      regionid STRING,
      gender STRING,
      PRIMARY KEY (userid) NOT ENFORCED
-   );
-
-   INSERT INTO users_keyed
+   ) AS
    SELECT userid, regionid, gender FROM sample_data_users;
    ```
 
 5. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
    ```sql
-   CREATE TABLE trades_enriched (
-     userid STRING,
-     symbol STRING,
-     side STRING,
-     quantity INT,
-     price INT,
-     regionid STRING,
-     gender STRING
-   );
-
-   INSERT INTO trades_enriched
+   CREATE MATERIALIZED TABLE trades_enriched AS
    SELECT
      t.userid,
      t.symbol,
@@ -110,16 +98,14 @@
 
 `ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn the `trades_enriched` stream from Step 1 into a windowed volume with a watermark it can order by:
 
-1. Create a windowed-volume table and stream 10-second trading volumes (shares traded) into it:
+1. Create a materialized windowed-volume table of 10-second trading volumes (shares traded):
 
    ```sql
-   CREATE TABLE trades_windowed (
+   CREATE MATERIALIZED TABLE trades_windowed (
      window_start TIMESTAMP(3) NOT NULL,
      total_quantity BIGINT,
      WATERMARK FOR window_start AS window_start
-   );
-
-   INSERT INTO trades_windowed
+   ) AS
    SELECT window_start, SUM(quantity) AS total_quantity
    FROM TABLE(
      TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
