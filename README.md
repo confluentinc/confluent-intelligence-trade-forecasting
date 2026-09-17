@@ -43,7 +43,7 @@
 5. Wait until both connectors show **Running**.
    ![Both connectors running](screenshots/06b-connectors-running.png)
 6. From the left nav, open **Topics**.
-   ![Topics nav](screenshots/06c-topics-nav.png)
+   <img src="screenshots/06c-topics-nav.png" width="180" alt="Topics nav">
 7. Click **sample_data_users**, then open the **Messages** tab to view live user records.
    ![Users topic messages](screenshots/07-topic-users.png)
 8. Click **sample_data_stock_trades**, open the **Messages** tab, and note the shared `userid` field.
