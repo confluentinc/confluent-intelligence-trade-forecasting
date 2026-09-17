@@ -70,7 +70,7 @@
      gender STRING,
      PRIMARY KEY (userid) NOT ENFORCED
    ) AS
-   SELECT userid, regionid, gender FROM sample_data_users;
+   SELECT COALESCE(userid, '') AS userid, regionid, gender FROM sample_data_users;
    ```
 
 > [!TIP]
