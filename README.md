@@ -116,38 +116,59 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 
 ### Step 2: Forecast Trades per Stock
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into a per-stock trade count every 10 seconds and forecast each symbol on its own. The inner query tumbles trades into `trade_count` per `symbol`, and `ML_FORECAST` — partitioned by `symbol` — projects where each stock's activity is heading (`minTrainingSize` is set to 10, applied per symbol, so a forecast appears once a stock has ~10 windows of history).
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first window `trades_enriched` into a per-stock trade count every 10 seconds, then forecast each symbol on its own.
 
-1. Create the forecast as a materialized table so the projections persist to a topic:
+1. Create the per-stock windowed count as a materialized table:
+
+   ```sql
+   CREATE MATERIALIZED TABLE trades_agg AS
+   SELECT
+     symbol,
+     window_start,
+     window_end,
+     COUNT(*) AS trade_count
+   FROM TABLE(
+     TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+   )
+   GROUP BY symbol, window_start, window_end;
+   ```
+
+2. Forecast each stock with `ML_FORECAST` partitioned by `symbol`. It returns an **array** of forecast points, so index the first one (`forecast[1]`) for the next-window prediction and its confidence bounds (`minTrainingSize` is 10 per symbol, so a stock forecasts once it has ~10 windows of history):
 
    ```sql
    CREATE MATERIALIZED TABLE trades_forecast AS
    SELECT
-     window_start,
      symbol,
-     ML_FORECAST(
-       CAST(trade_count AS DOUBLE),
-       window_start,
-       JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
-     ) OVER (
-       PARTITION BY symbol
-       ORDER BY window_time
-       RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-     ) AS forecast
+     ts,
+     trade_count                AS current_count,
+     forecast[1].forecast_value AS forecast_count,
+     forecast[1].lower_bound    AS lower_bound,
+     forecast[1].upper_bound    AS upper_bound
    FROM (
-     SELECT window_start, window_time, symbol, COUNT(*) AS trade_count
-     FROM TABLE(
-       TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
-     )
-     GROUP BY window_start, window_end, window_time, symbol
-   );
+     SELECT
+       symbol,
+       window_end AS ts,
+       trade_count,
+       ML_FORECAST(
+         CAST(trade_count AS DOUBLE),
+         window_end,
+         JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
+       ) OVER (
+         PARTITION BY symbol
+         ORDER BY window_end
+       ) AS forecast
+     FROM trades_agg
+   )
+   WHERE CARDINALITY(forecast) >= 1;
    ```
 
-2. Inspect the output, flattening the `forecast` ROW into columns to read each stock's actual vs. forecasted trade count with confidence bounds:
+3. Inspect the output — each stock's current vs. forecasted trade count, ranked by where activity is heading:
 
    ```sql
-   SELECT window_start, symbol, forecast.*
-   FROM trades_forecast;
+   SELECT symbol, current_count, forecast_count, lower_bound, upper_bound
+   FROM trades_forecast
+   ORDER BY forecast_count DESC
+   LIMIT 20;
    ```
 
    <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
