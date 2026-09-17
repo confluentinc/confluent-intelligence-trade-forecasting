@@ -21,13 +21,11 @@
 > [!NOTE]
 > Confluent Cloud automatically creates a `default` environment for every account. We'll create all of this workshop's resources — cluster, connectors, and Flink — inside it.
 
-> Reference: [Manage environments on Confluent Cloud](https://docs.confluent.io/cloud/current/security/access-control/hierarchy/cloud-environments.html)
-
 ---
 
 ## 3. Create a Cluster
 
-1. On the **Create cluster** page, choose the **Basic** cluster type, select cloud provider **AWS** and region **us-east-1**, then click **Continue**.
+1. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
    ![Create cluster](screenshots/03-cluster-create.png)
 2. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit** and launch the cluster.
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
