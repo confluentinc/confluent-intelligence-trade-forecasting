@@ -152,20 +152,23 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    WHERE CARDINALITY(forecast) >= 1;
    ```
 
-2. Inspect the output — each stock's current vs. forecasted trade count, ranked by where activity is heading:
+2. Inspect the **latest** forecast for each stock. `trades_forecast` has one row per stock *per window*, so deduplicate to the most recent window per `symbol`:
 
    ```sql
    SELECT symbol, current_count, forecast_count, upper_bound
-   FROM trades_forecast
-   ORDER BY forecast_count DESC
-   LIMIT 20;
+   FROM (
+     SELECT *,
+       ROW_NUMBER() OVER (PARTITION BY symbol ORDER BY `$rowtime` DESC) AS rn
+     FROM trades_forecast
+   )
+   WHERE rn = 1;
    ```
 
-   Each row is one stock, and *count* means **trades in a 10-second window**:
+   You get one row per stock — its latest window — where *count* means **trades in a 10-second window**:
    - **`current_count`** — trades that stock had in the latest window (what just happened).
    - **`forecast_count`** — trades the model predicts for its next window.
    - **`upper_bound`** — top of the confidence range on that prediction.
 
-   A `forecast_count` climbing above `current_count` means that stock is **heating up** — ordering by `forecast_count DESC` surfaces the stocks about to get busiest.
+   A `forecast_count` above `current_count` means that stock is **heating up**.
 
    <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
