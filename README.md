@@ -7,6 +7,8 @@
 > [!NOTE]
 > Total time: ~45–50 minutes, including sign-up.
 
+![Architecture](screenshots/architecture.png)
+
 ---
 
 ## 1. Sign Up
