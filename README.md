@@ -29,6 +29,8 @@
 2. Select cloud provider **AWS** and region **us-east-1**, then launch it.
    ![Select AWS us-east-1](screenshots/04-cluster-region.png)
 
+> Reference: [Create a Kafka cluster in Confluent Cloud](https://docs.confluent.io/cloud/current/clusters/create-cluster.html)
+
 ---
 
 ## 4. Create the Datagen Connectors
