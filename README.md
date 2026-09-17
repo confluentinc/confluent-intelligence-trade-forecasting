@@ -15,7 +15,7 @@
 
 1. Click the button below and create an account with your email.
 
-   [![Sign up for Confluent Cloud](https://img.shields.io/badge/Sign_up_for_Confluent_Cloud-007BFF?style=for-the-badge&logo=apachekafka&logoColor=white)](https://confluent.cloud/signup)
+   [![Sign up for Confluent Cloud](https://img.shields.io/badge/Sign_up_for_Confluent_Cloud-007BFF?style=for-the-badge&logo=apachekafka&logoColor=white)](https://cnfl.io/devday2026)
 2. Verify your email and log in to the Confluent Cloud console.
 
 > [!NOTE]
