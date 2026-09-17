@@ -56,6 +56,8 @@
 
 1. Open **Flink → SQL Workspace** (create a compute pool if prompted).
    ![Flink SQL workspace](screenshots/09-flink-workspace.png)
+
+   > Reference: [Flink SQL Quick Start on Confluent Cloud](https://docs.confluent.io/cloud/current/flink/get-started/quick-start-cloud-console.html)
 2. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
 
    ```sql
