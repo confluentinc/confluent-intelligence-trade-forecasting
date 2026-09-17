@@ -46,17 +46,30 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 1. Open **Flink → SQL Workspace** (create a compute pool if prompted).
    ![Flink SQL workspace](screenshots/09-flink-workspace.png)
-2. Run this query to enrich each pageview with the user's region and gender:
+2. `users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
+
+   ```sql
+   CREATE TABLE users_keyed (
+     userid STRING,
+     regionid STRING,
+     gender STRING,
+     PRIMARY KEY (userid) NOT ENFORCED
+   );
+
+   INSERT INTO users_keyed
+   SELECT userid, regionid, gender FROM users;
+   ```
+
+3. Enrich each pageview with its user's region and gender using a temporal join:
 
    ```sql
    SELECT
      p.userid,
      p.pageid,
-     p.viewtime,
      u.regionid,
      u.gender
    FROM pageviews p
-   JOIN users u
+   JOIN users_keyed FOR SYSTEM_TIME AS OF p.`$rowtime` AS u
      ON p.userid = u.userid;
    ```
 
@@ -66,25 +79,28 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
 
 ## Lab 2 — Step 2: Flink Built-in Forecasting Model
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn raw pageviews into a windowed count:
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn raw pageviews into a windowed count with a watermark it can order by:
 
-1. Create a 1-minute tumbling-window view of pageview volume:
+1. Create a windowed-count table and stream 10-second pageview volumes into it:
 
    ```sql
-   CREATE TABLE pageviews_per_minute AS
-   SELECT
-     window_start,
-     window_end,
-     COUNT(*) AS pageview_count
+   CREATE TABLE pageviews_windowed (
+     window_start TIMESTAMP(3) NOT NULL,
+     pageview_count BIGINT,
+     WATERMARK FOR window_start AS window_start
+   );
+
+   INSERT INTO pageviews_windowed
+   SELECT window_start, COUNT(*) AS pageview_count
    FROM TABLE(
-     TUMBLE(TABLE pageviews, DESCRIPTOR($rowtime), INTERVAL '1' MINUTE)
+     TUMBLE(TABLE pageviews, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
    )
    GROUP BY window_start, window_end;
    ```
 
    ![Windowed pageview counts](screenshots/11-flink-windowed-counts.png)
 
-2. Run `ML_FORECAST` over that time series to project the next 5 minutes of pageview volume:
+2. Run `ML_FORECAST` over that time series to project the next 5 windows of pageview volume (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
 
    ```sql
    SELECT
@@ -92,12 +108,12 @@ Both templates generate a `userid` in the same `User_1`–`User_9` range — tha
      ML_FORECAST(
        CAST(pageview_count AS DOUBLE),
        window_start,
-       JSON_OBJECT('horizon' VALUE 5)
+       JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
      ) OVER (
        ORDER BY window_start
        RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
      ) AS forecast
-   FROM pageviews_per_minute;
+   FROM pageviews_windowed;
    ```
 
    ![Forecast output](screenshots/12-flink-forecast-result.png)
