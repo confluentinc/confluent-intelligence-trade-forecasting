@@ -22,9 +22,6 @@
 3. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit** and launch the cluster.
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
-> [!NOTE]
-> Confluent Cloud automatically creates a `default` environment for every account. We'll create all of this workshop's resources — cluster, connectors, and Flink — inside it.
-
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
