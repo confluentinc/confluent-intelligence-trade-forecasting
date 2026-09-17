@@ -99,39 +99,26 @@
 
 ## Lab 2 — Step 2: Flink Built-in Forecasting Model
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first turn the `trades_enriched` stream from Step 1 into a windowed volume with a watermark it can order by:
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into 10-second trading volumes and forecast them in a single statement. The inner query tumbles the trades into per-window `total_quantity` (shares traded), and `ML_FORECAST` projects the next 5 windows (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
 
-1. Create a materialized windowed-volume table of 10-second trading volumes (shares traded):
+```sql
+SELECT
+  window_start,
+  ML_FORECAST(
+    CAST(total_quantity AS DOUBLE),
+    window_start,
+    JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
+  ) OVER (
+    ORDER BY window_time
+    RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS forecast
+FROM (
+  SELECT window_start, window_time, SUM(quantity) AS total_quantity
+  FROM TABLE(
+    TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+  )
+  GROUP BY window_start, window_end, window_time
+);
+```
 
-   ```sql
-   CREATE MATERIALIZED TABLE trades_windowed (
-     window_start TIMESTAMP(3) NOT NULL,
-     total_quantity BIGINT,
-     WATERMARK FOR window_start AS window_start
-   ) AS
-   SELECT window_start, SUM(quantity) AS total_quantity
-   FROM TABLE(
-     TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
-   )
-   GROUP BY window_start, window_end;
-   ```
-
-   <img src="screenshots/11-flink-windowed-counts.png" width="600" alt="Windowed trade volume">
-
-2. Run `ML_FORECAST` over that time series to project the next 5 windows of trading volume (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
-
-   ```sql
-   SELECT
-     window_start,
-     ML_FORECAST(
-       CAST(total_quantity AS DOUBLE),
-       window_start,
-       JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
-     ) OVER (
-       ORDER BY window_start
-       RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-     ) AS forecast
-   FROM trades_windowed;
-   ```
-
-   <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
+<img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
