@@ -158,10 +158,10 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    SELECT symbol, current_count, forecast_count, upper_bound
    FROM (
      SELECT *,
-       ROW_NUMBER() OVER (PARTITION BY symbol ORDER BY `$rowtime` DESC) AS rn
+       ROW_NUMBER() OVER (PARTITION BY symbol ORDER BY `$rowtime` DESC) AS row_num
      FROM trades_forecast
    )
-   WHERE rn = 1;
+   WHERE row_num = 1;
    ```
 
    You get one row per stock — its latest window — where *count* means **trades in a 10-second window**:
