@@ -49,8 +49,6 @@
 8. Click **sample_data_stock_trades**, open the **Messages** tab, and note the shared `userid` field.
    ![Stock trades topic messages](screenshots/08-topic-stock-trades.png)
 
-Both templates generate a `userid` in the same `User_1`–`User_9` range — that's what makes them joinable in the next lab.
-
 ---
 
 ## Lab 2 — Step 1: Flink Join
