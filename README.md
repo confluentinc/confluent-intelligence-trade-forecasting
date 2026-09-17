@@ -116,24 +116,9 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 
 ### Step 2: Forecast Trades per Stock
 
-`ML_FORECAST` needs a real time series (a numeric value per timestamp), so first window `trades_enriched` into a per-stock trade count every 10 seconds, then forecast each symbol on its own.
+`ML_FORECAST` needs a real time series (a numeric value per timestamp), so window `trades_enriched` into a per-stock trade count every 10 seconds and forecast each symbol on its own — in one statement.
 
-1. Create the per-stock windowed count as a materialized table:
-
-   ```sql
-   CREATE MATERIALIZED TABLE trades_agg AS
-   SELECT
-     symbol,
-     window_start,
-     window_end,
-     COUNT(*) AS trade_count
-   FROM TABLE(
-     TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
-   )
-   GROUP BY symbol, window_start, window_end;
-   ```
-
-2. Forecast each stock with `ML_FORECAST` partitioned by `symbol`. It returns an **array** of forecast points, so index the first one (`forecast[1]`) for the next-window prediction and its confidence bounds (`minTrainingSize` is 10 per symbol, so a stock forecasts once it has ~10 windows of history):
+1. Create the forecast as a materialized table. The inner query tumbles trades into `trade_count` per `symbol`; `ML_FORECAST` — partitioned by `symbol` — returns an **array** of forecast points, so index the first one (`forecast[1]`) for the next-window prediction and its confidence bounds (`minTrainingSize` is 10 per symbol, so a stock forecasts once it has ~10 windows of history):
 
    ```sql
    CREATE MATERIALIZED TABLE trades_forecast AS
@@ -155,14 +140,20 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
          JSON_OBJECT('minTrainingSize' VALUE 10, 'horizon' VALUE 5)
        ) OVER (
          PARTITION BY symbol
-         ORDER BY window_end
+         ORDER BY window_time
        ) AS forecast
-     FROM trades_agg
+     FROM (
+       SELECT symbol, window_end, window_time, COUNT(*) AS trade_count
+       FROM TABLE(
+         TUMBLE(TABLE trades_enriched, DESCRIPTOR($rowtime), INTERVAL '10' SECONDS)
+       )
+       GROUP BY symbol, window_start, window_end, window_time
+     )
    )
    WHERE CARDINALITY(forecast) >= 1;
    ```
 
-3. Inspect the output — each stock's current vs. forecasted trade count, ranked by where activity is heading:
+2. Inspect the output — each stock's current vs. forecasted trade count, ranked by where activity is heading:
 
    ```sql
    SELECT symbol, current_count, forecast_count, lower_bound, upper_bound
