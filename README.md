@@ -143,10 +143,11 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
    );
    ```
 
-2. Inspect the output to see each stock's actual vs. forecasted trade count, with confidence bounds:
+2. Inspect the output, flattening the `forecast` ROW into columns to read each stock's actual vs. forecasted trade count with confidence bounds:
 
    ```sql
-   SELECT * FROM trades_forecast;
+   SELECT window_start, symbol, forecast.*
+   FROM trades_forecast;
    ```
 
    <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
