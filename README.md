@@ -74,7 +74,7 @@
    ```
 
 > [!TIP]
-> A **materialized table** bundles a table and its continuously-running query into one object — define it once and Flink keeps it up to date, with no separate `INSERT INTO` job to manage.
+> A **materialized table** bundles a table and its continuous query into one object — define it once, with no separate `INSERT INTO` to manage. Better yet, you can evolve its logic in place with `CREATE OR ALTER MATERIALIZED TABLE` (change the query, add columns) instead of tearing statements down and rebuilding them.
 
 5. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
