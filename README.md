@@ -183,7 +183,13 @@ Tear everything down so nothing keeps running against your credit.
 
    ```sql
    DROP TABLE trades_forecast;
+   ```
+
+   ```sql
    DROP TABLE trades_enriched;
+   ```
+
+   ```sql
    DROP TABLE users_keyed;
    ```
 2. Delete both **Sample Data** connectors from **Connectors**.
