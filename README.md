@@ -54,7 +54,7 @@
 
 ## Lab 2 — Step 1: Flink Join
 
-1. Open Flink at [confluent.cloud/go/flink](https://confluent.cloud/go/flink), select the **default** environment, and click **Continue**.
+1. [Open Flink](https://confluent.cloud/go/flink), select the **default** environment, and click **Continue**.
 
    <img src="screenshots/09-flink-navigate.png" width="420" alt="Navigate to Flink compute pools">
 2. On the **Compute pools** tab, click **SQL Workspace** on the default pool (created for you automatically).
