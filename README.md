@@ -73,8 +73,8 @@
    SELECT userid, regionid, gender FROM sample_data_users;
    ```
 
-   > [!TIP]
-   > A **materialized table** bundles a table and its continuously-running query into one object — define it once and Flink keeps it up to date, with no separate `INSERT INTO` job to manage.
+> [!TIP]
+> A **materialized table** bundles a table and its continuously-running query into one object — define it once and Flink keeps it up to date, with no separate `INSERT INTO` job to manage.
 
 5. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
