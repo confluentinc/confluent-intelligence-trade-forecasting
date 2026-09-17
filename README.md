@@ -54,11 +54,14 @@
 
 ## Lab 2 — Step 1: Flink Join
 
-1. Open **Flink → SQL Workspace** (create a compute pool if prompted).
-   ![Flink SQL workspace](screenshots/09-flink-workspace.png)
+1. Open Flink at [confluent.cloud/go/flink](https://confluent.cloud/go/flink), select the **default** environment, and click **Continue**.
 
-   > Reference: open Flink directly at [confluent.cloud/go/flink](https://confluent.cloud/go/flink)
-2. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
+   <img src="screenshots/09-flink-navigate.png" width="420" alt="Navigate to Flink compute pools">
+2. On the **Compute pools** tab, click **SQL Workspace** on the default pool (created for you automatically).
+   ![Flink compute pool](screenshots/09b-compute-pool.png)
+3. In the workspace, set **Use catalog** to `default` and **Use database** to `cluster_0` so your topics resolve as tables.
+   ![Set catalog and database](screenshots/09c-workspace-catalog.png)
+4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
 
    ```sql
    CREATE TABLE users_keyed (
@@ -72,7 +75,7 @@
    SELECT userid, regionid, gender FROM sample_data_users;
    ```
 
-3. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
+5. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
    ```sql
    CREATE TABLE trades_enriched (
