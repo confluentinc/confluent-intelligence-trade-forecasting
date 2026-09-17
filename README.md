@@ -37,9 +37,9 @@
 2. Choose the **Sample Data** (Datagen Source) connector and click **Get started**.
    ![Sample Data connector](screenshots/05b-sample-data-plugin.png)
 3. Select the **Users** template — it writes to the `sample_data_users` topic — then click **Launch**.
-   ![Launch Users sample data](screenshots/05-connector-users.png)
+   <img src="screenshots/05-connector-users.png" width="420" alt="Launch Users sample data">
 4. Add another connector the same way, select the **Stock trades** template — it writes to `sample_data_stock_trades` — then click **Launch**.
-   ![Launch Stock trades sample data](screenshots/06-connector-stock-trades.png)
+   <img src="screenshots/06-connector-stock-trades.png" width="420" alt="Launch Stock trades sample data">
 5. Wait until both connectors show **Running**.
    ![Both connectors running](screenshots/06b-connectors-running.png)
 
