@@ -30,7 +30,7 @@
 
 ---
 
-## 3. Create the Datagen Connectors
+## 3. Generate Data Sources
 
 1. From your cluster, open **Connectors** and click **Add Connector**.
    ![Connectors page](screenshots/05a-connectors-page.png)
@@ -42,17 +42,12 @@
    <img src="screenshots/06-connector-stock-trades.png" width="420" alt="Launch Stock trades sample data">
 5. Wait until both connectors show **Running**.
    ![Both connectors running](screenshots/06b-connectors-running.png)
+6. Open **Topics → sample_data_users** and view live messages.
+   ![Users topic messages](screenshots/07-topic-users.png)
+7. Open **Topics → sample_data_stock_trades** and view live messages — note the shared `userid` field.
+   ![Stock trades topic messages](screenshots/08-topic-stock-trades.png)
 
 Both templates generate a `userid` in the same `User_1`–`User_9` range — that's what makes them joinable in the next lab.
-
----
-
-## 4. Explore the Data
-
-1. Open **Topics → sample_data_users** and view live messages.
-   ![Users topic messages](screenshots/07-topic-users.png)
-2. Open **Topics → sample_data_stock_trades** and view live messages — note the shared `userid` field.
-   ![Stock trades topic messages](screenshots/08-topic-stock-trades.png)
 
 ---
 
