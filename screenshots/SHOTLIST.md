@@ -15,8 +15,9 @@ README references these files but they don't exist yet — capture each and drop
 | `05-connector-users.png` | Provided — Launch Sample Data modal, Users template (topic `sample_data_users`) |
 | `06-connector-stock-trades.png` | Provided — Launch Sample Data modal, Stock trades template (topic `sample_data_stock_trades`) |
 | `06b-connectors-running.png` | Provided — Connectors list, both Running |
-| `07-topic-users.png` | Topic viewer showing live `sample_data_users` messages |
-| `08-topic-stock-trades.png` | Topic viewer showing live `sample_data_stock_trades` messages |
+| `06c-topics-nav.png` | Provided — left nav with Topics selected |
+| `07-topic-users.png` | Provided — `sample_data_users` Messages tab |
+| `08-topic-stock-trades.png` | Provided — `sample_data_stock_trades` Messages tab |
 | `09-flink-workspace.png` | Flink SQL Workspace, empty/ready state |
 | `10-flink-join-result.png` | Messages in the `trades_enriched` topic (join output) |
 | `11-flink-windowed-counts.png` | Result grid of `trades_windowed` |
