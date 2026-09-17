@@ -5,7 +5,6 @@ README references these files but they don't exist yet — capture each and drop
 | File | What to capture |
 |---|---|
 | `01-signup.png` | Confluent Cloud sign-up form |
-| `02-login.png` | Console homepage right after first login |
 | `02b-environment.png` | Environments page showing the `default` environment opened |
 | `03-cluster-create.png` | Provided — Create cluster page with default Standard / AWS / us-east-2 |
 | `04-payment-info.png` | Provided — Enter payment information screen |
