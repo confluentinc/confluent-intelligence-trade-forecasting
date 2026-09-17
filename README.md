@@ -101,6 +101,14 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 
    <img src="screenshots/10-flink-join-result.png" width="600" alt="Enriched trades topic">
 
+6. Query the enriched stream to confirm each trade now carries its customer's region and gender:
+
+   ```sql
+   SELECT * FROM trades_enriched;
+   ```
+
+   <img src="screenshots/10b-trades-enriched-query.png" width="600" alt="Query trades_enriched">
+
 ---
 
 ### Step 2: Forecast Trading-Volume Spikes
