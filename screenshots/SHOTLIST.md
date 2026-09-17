@@ -7,8 +7,8 @@ README references these files but they don't exist yet — capture each and drop
 | `01-signup.png` | Confluent Cloud sign-up form |
 | `02-login.png` | Console homepage right after first login |
 | `02b-environment.png` | Environments page showing the `default` environment opened |
-| `03-cluster-type.png` | Cluster type selection screen, **Basic** highlighted |
-| `04-cluster-region.png` | Provider/region screen with **AWS** + **us-east-1** selected |
+| `03-cluster-create.png` | Provided — retake with **Basic** + **AWS us-east-1** selected (current shot shows Standard/Ohio) |
+| `04-payment-info.png` | Provided — Enter payment information screen |
 | `05-connector-users.png` | Datagen Source config screen with **Users** quickstart selected |
 | `06-connector-pageviews.png` | Datagen Source config screen with **Pageviews** quickstart selected |
 | `07-topic-users.png` | Topic viewer showing live `users` messages |

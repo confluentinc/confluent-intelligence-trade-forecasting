@@ -24,10 +24,12 @@
 
 ## 3. Create a Cluster
 
-1. Inside your environment, click **Create cluster**, choose the **Basic** cluster type.
-   ![Choose cluster type](screenshots/03-cluster-type.png)
-2. Select cloud provider **AWS** and region **us-east-1**, then launch it.
-   ![Select AWS us-east-1](screenshots/04-cluster-region.png)
+1. On the **Create cluster** page, choose the **Basic** cluster type, select cloud provider **AWS** and region **us-east-1**, then click **Continue**.
+   ![Create cluster](screenshots/03-cluster-create.png)
+2. When prompted, enter your payment information to activate the account, then launch the cluster.
+   ![Enter payment information](screenshots/04-payment-info.png)
+
+> **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
 > Reference: [Create a Kafka cluster in Confluent Cloud](https://docs.confluent.io/cloud/current/clusters/create-cluster.html)
 
