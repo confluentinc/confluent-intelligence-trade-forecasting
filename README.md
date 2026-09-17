@@ -182,15 +182,15 @@ Tear everything down so nothing keeps running against your credit.
 1. In the SQL workspace, drop the Flink materialized tables (this stops their continuous statements):
 
    ```sql
-   DROP TABLE trades_forecast;
+   DROP MATERIALIZED TABLE trades_forecast;
    ```
 
    ```sql
-   DROP TABLE trades_enriched;
+   DROP MATERIALIZED TABLE trades_enriched;
    ```
 
    ```sql
-   DROP TABLE users_keyed;
+   DROP MATERIALIZED TABLE users_keyed;
    ```
 2. Delete both **Sample Data** connectors from **Connectors**.
 3. Delete the Flink **compute pool** (Flink → Compute pools → ⋮ → Delete).
