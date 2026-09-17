@@ -18,6 +18,9 @@
 1. On the **Environments** page, open the `default` environment that came with your account.
    ![Default environment](screenshots/02b-environment.png)
 
+> [!NOTE]
+> Confluent Cloud automatically creates a `default` environment for every account. We'll create all of this workshop's resources — cluster, connectors, and Flink — inside it.
+
 > Reference: [Manage environments on Confluent Cloud](https://docs.confluent.io/cloud/current/security/access-control/hierarchy/cloud-environments.html)
 
 ---
@@ -29,6 +32,7 @@
 2. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit** and launch the cluster.
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
+> [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
 > Reference: [Create a Kafka cluster in Confluent Cloud](https://docs.confluent.io/cloud/current/clusters/create-cluster.html)
