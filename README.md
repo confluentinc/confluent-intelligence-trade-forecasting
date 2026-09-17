@@ -16,6 +16,9 @@
    [![Sign up for Confluent Cloud](https://img.shields.io/badge/Sign_up_for_Confluent_Cloud-007BFF?style=for-the-badge&logo=apachekafka&logoColor=white)](https://confluent.cloud/signup)
 2. Verify your email and log in to the Confluent Cloud console.
 
+   > [!NOTE]
+   > During signup it may prompt you to create a cluster — skip that, we'll create it in the next section.
+
 ---
 
 ## 2. Create a Cluster
