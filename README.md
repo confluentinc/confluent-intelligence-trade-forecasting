@@ -2,7 +2,7 @@
 
 **Use case:** picture an online trading platform. Stock trades are streaming in constantly, and the team wants two things live: who's trading and where they're from (a **join**), and which stocks are surging in activity so they can spot momentum as it builds (a **forecast**). In this lab you'll build exactly that — entirely inside Confluent Cloud, no Terraform, no local setup.
 
-**Why it matters:** catching the surge *as it builds* lets the platform act while it still counts — surface the trending stock to users or flag unusual activity for compliance — instead of reacting after it's already over.
+**Why it matters:** forecasting lets the platform get ahead of a surge — provision capacity, alert users, or flag manipulation *before* it peaks — instead of reacting once it's already over.
 
 Total time: ~45–50 minutes, including sign-up.
 
