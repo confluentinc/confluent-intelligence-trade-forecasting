@@ -1,4 +1,4 @@
-# Real-Time Join & Forecasting with Confluent Cloud
+# Real-Time Trade Intelligence with Confluent Cloud
 
 **Use case:** picture an online trading platform. Stock trades are streaming in constantly, and the team wants two things live: who's trading and where they're from (a **join**), and which stocks are surging in activity so they can spot momentum as it builds (a **forecast**). In this lab you'll build exactly that — entirely inside Confluent Cloud, no Terraform, no local setup.
 
