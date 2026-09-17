@@ -58,9 +58,9 @@
 
    <img src="screenshots/09-flink-navigate.png" width="420" alt="Navigate to Flink compute pools">
 2. On the **Compute pools** tab, click **SQL Workspace** on the default pool (created for you automatically).
-   ![Flink compute pool](screenshots/09b-compute-pool.png)
+   <img src="screenshots/09b-compute-pool.png" width="600" alt="Flink compute pool">
 3. In the workspace, set **Use catalog** to `default` and **Use database** to `cluster_0` so your topics resolve as tables.
-   ![Set catalog and database](screenshots/09c-workspace-catalog.png)
+   <img src="screenshots/09c-workspace-catalog.png" width="600" alt="Set catalog and database">
 4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user:
 
    ```sql
@@ -102,7 +102,7 @@
      ON t.userid = u.userid;
    ```
 
-   ![Enriched trades topic](screenshots/10-flink-join-result.png)
+   <img src="screenshots/10-flink-join-result.png" width="600" alt="Enriched trades topic">
 
 ---
 
@@ -127,7 +127,7 @@
    GROUP BY window_start, window_end;
    ```
 
-   ![Windowed trade volume](screenshots/11-flink-windowed-counts.png)
+   <img src="screenshots/11-flink-windowed-counts.png" width="600" alt="Windowed trade volume">
 
 2. Run `ML_FORECAST` over that time series to project the next 5 windows of trading volume (`minTrainingSize` is set to 10 so a forecast appears within ~2 minutes instead of the default 128 windows):
 
@@ -145,4 +145,4 @@
    FROM trades_windowed;
    ```
 
-   ![Forecast output](screenshots/12-flink-forecast-result.png)
+   <img src="screenshots/12-flink-forecast-result.png" width="600" alt="Forecast output">
