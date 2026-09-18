@@ -206,7 +206,10 @@ Tear everything down so nothing keeps running against your credit.
    DROP MATERIALIZED TABLE users_keyed;
    ```
 2. Delete both **Sample Data** connectors from **Connectors**.
-3. Delete the **cluster** (Cluster settings → Delete cluster) — this removes all remaining topics.
+
+   Navigate to the [cluster](https://confluent.cloud/go/cluster) you used for the workshop. Go to **Connectors** → sample_data (or sample_data_1) → Settings → Delete connector. 
+
+3. Delete the **cluster** (Cluster → Settings → Delete cluster). This removes all remaining topics.
 
 > [!NOTE]
-> On the free trial you won't be charged, but tearing down stops the connectors and Flink statements from consuming your $400 credit.
+> Tearing down stops the connectors and Flink statements from consuming your $400 credit.
