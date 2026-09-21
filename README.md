@@ -25,18 +25,23 @@
 
 ## 2. Create a Cluster
 
-1. On the [**Environments** page](https://confluent.cloud/go/environments), open the `default` environment that came with your account.
-2. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
+1. On the [**Environments** page](https://confluent.cloud/go/environments), open the `default` environment that came with your account. This lands you on the **Environment overview** — your home base for this workshop, where clusters, topics, and Flink compute pools all live.
+   
+   ![Environment overview](screenshots/02a-environment-overview.png)
+2. Open **Clusters** from the left nav (or the **Clusters** card). The environment is brand new, so it has none yet — click **Add new cluster** to create your first one.
+   
+   ![Add your first cluster](screenshots/02b-clusters-empty.png)
+3. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
    
    ![Create cluster](screenshots/03-cluster-create.png)
-3. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit**.
+4. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit**.
    
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
-4. Back on the **Create cluster** page, click **Launch cluster** — it shows **Running** once ready.
+5. Back on the **Create cluster** page, click **Launch cluster** — it shows **Running** once ready.
    ![Cluster running](screenshots/04c-cluster-running.png)
 
 ---

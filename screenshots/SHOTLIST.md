@@ -5,6 +5,8 @@ README references these files but they don't exist yet — capture each and drop
 | File | What to capture |
 |---|---|
 | `architecture.png` | Provided — end-to-end architecture diagram |
+| `02a-environment-overview.png` | Provided — `default` Environment overview landing page |
+| `02b-clusters-empty.png` | Provided — Clusters page empty state with Add new cluster |
 | `03-cluster-create.png` | Provided — Create cluster page with default Standard / AWS / us-east-2 |
 | `04-payment-info.png` | Provided — Enter payment information screen |
 | `04c-cluster-running.png` | Provided — cluster overview showing Running |
