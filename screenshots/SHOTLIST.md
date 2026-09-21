@@ -19,7 +19,10 @@ README references these files but they don't exist yet — capture each and drop
 | `07-topic-users.png` | Provided — `sample_data_users` Messages tab |
 | `08-topic-stock-trades.png` | Provided — `sample_data_stock_trades` Messages tab |
 | `09-flink-navigate.png` | Provided — Navigate to Flink compute pools (select default env) |
-| `09b-compute-pool.png` | Provided — Flink Compute pools tab with SQL Workspace button |
-| `09c-workspace-catalog.png` | Provided — workspace Use catalog / Use database selector |
+| `09a-compute-pool-empty.png` | Provided — Compute pools empty state with Add compute pool |
+| `09b-compute-pool-region.png` | Provided — Create compute pool, select region (AWS / us-east-2) |
+| `09c-compute-pool-review.png` | Provided — Create compute pool, review and create (10 CFU) |
+| `09d-compute-pool-ready.png` | Provided — Flink Compute pools tab with SQL Workspace button |
+| `09e-workspace-catalog.png` | Provided — workspace Use catalog / Use database selector |
 | `10b-trades-enriched-query.png` | Provided — `SELECT * FROM trades_enriched` result grid |
 | `12-flink-forecast-result.png` | Provided — latest forecast per stock (dedup query result) |
