@@ -5,6 +5,8 @@ README references these files but they don't exist yet — capture each and drop
 | File | What to capture |
 |---|---|
 | `architecture.png` | Provided — end-to-end architecture diagram |
+| `02a-environment-overview.png` | Provided — `default` Environment overview landing page |
+| `02b-clusters-empty.png` | Provided — Clusters page empty state with Add new cluster |
 | `03-cluster-create.png` | Provided — Create cluster page with default Standard / AWS / us-east-2 |
 | `04-payment-info.png` | Provided — Enter payment information screen |
 | `04c-cluster-running.png` | Provided — cluster overview showing Running |
@@ -17,7 +19,10 @@ README references these files but they don't exist yet — capture each and drop
 | `07-topic-users.png` | Provided — `sample_data_users` Messages tab |
 | `08-topic-stock-trades.png` | Provided — `sample_data_stock_trades` Messages tab |
 | `09-flink-navigate.png` | Provided — Navigate to Flink compute pools (select default env) |
-| `09b-compute-pool.png` | Provided — Flink Compute pools tab with SQL Workspace button |
-| `09c-workspace-catalog.png` | Provided — workspace Use catalog / Use database selector |
+| `09a-compute-pool-empty.png` | Provided — Compute pools empty state with Add compute pool |
+| `09b-compute-pool-region.png` | Provided — Create compute pool, select region (AWS / us-east-2) |
+| `09c-compute-pool-review.png` | Provided — Create compute pool, review and create (10 CFU) |
+| `09d-compute-pool-ready.png` | Provided — Flink Compute pools tab with SQL Workspace button |
+| `09e-workspace-catalog.png` | Provided — workspace Use catalog / Use database selector |
 | `10b-trades-enriched-query.png` | Provided — `SELECT * FROM trades_enriched` result grid |
 | `12-flink-forecast-result.png` | Provided — latest forecast per stock (dedup query result) |

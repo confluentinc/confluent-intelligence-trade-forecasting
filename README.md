@@ -25,18 +25,23 @@
 
 ## 2. Create a Cluster
 
-1. On the [**Environments** page](https://confluent.cloud/go/environments), open the `default` environment that came with your account.
-2. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
+1. On the [**Environments** page](https://confluent.cloud/go/environments), open the `default` environment that came with your account. This lands you on the **Environment overview** — your home base for this workshop, where clusters, topics, and Flink compute pools all live.
+   
+   ![Environment overview](screenshots/02a-environment-overview.png)
+2. Open **Clusters** from the left nav (or the **Clusters** card). The environment is brand new, so it has none yet — click **Add new cluster** to create your first one.
+   
+   ![Add your first cluster](screenshots/02b-clusters-empty.png)
+3. On the **Create cluster** page, keep the default configuration — **Standard** cluster, **AWS**, region **us-east-2** — and click **Continue**.
    
    ![Create cluster](screenshots/03-cluster-create.png)
-3. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit**.
+4. On the **Enter payment information** screen, add your card details — you won't be charged until your free trial ends — then click **Submit**.
    
    <img src="screenshots/04-payment-info.png" width="360" alt="Enter payment information">
 
 > [!TIP]
 > **You won't be charged.** Every new Confluent Cloud signup includes **$400 in free credit**, which more than covers this workshop. A card is only required to activate your account.
 
-4. Back on the **Create cluster** page, click **Launch cluster** — it shows **Running** once ready.
+5. Back on the **Create cluster** page, click **Launch cluster** — it shows **Running** once ready.
    ![Cluster running](screenshots/04c-cluster-running.png)
 
 ---
@@ -79,13 +84,22 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 1. [Open Flink](https://confluent.cloud/go/flink), select the **default** environment, and click **Continue**.
 
    <img src="screenshots/09-flink-navigate.png" width="420" alt="Navigate to Flink compute pools">
-2. On the **Compute pools** tab, click **SQL Workspace** on the default pool (created for you automatically).
-  
-   <img src="screenshots/09b-compute-pool.png" width="600" alt="Flink compute pool">
-3. In the workspace, set **Use catalog** to `default` and **Use database** to `cluster_0` so your topics resolve as tables.
+2. Flink runs your SQL on a **compute pool**, and a brand-new environment has none. On the **Compute pools** tab, click **Add compute pool**.
    
-   <img src="screenshots/09c-workspace-catalog.png" width="600" alt="Set catalog and database">
-4. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user using a [materialized table](https://docs.confluent.io/cloud/current/flink/reference/statements/create-materialized-table.html):
+   <img src="screenshots/09a-compute-pool-empty.png" width="600" alt="No compute pools yet">
+3. Choose **AWS** and region **Ohio (us-east-2)** — a compute pool must be in the same cloud and region as the cluster it processes — then click **Continue**.
+   
+   <img src="screenshots/09b-compute-pool-region.png" width="480" alt="Select compute pool region">
+4. Review the pool — the defaults (max **10 CFU**, no base cost) are plenty for this workshop — and click **Create**.
+   
+   <img src="screenshots/09c-compute-pool-review.png" width="480" alt="Review and create compute pool">
+5. Once the pool is ready, click **SQL Workspace** on it to open a query editor.
+   
+   <img src="screenshots/09d-compute-pool-ready.png" width="600" alt="Open SQL Workspace">
+6. In the workspace, set **Use catalog** to `default` and **Use database** to `cluster_0` so your topics resolve as tables.
+   
+   <img src="screenshots/09e-workspace-catalog.png" width="600" alt="Set catalog and database">
+7. `sample_data_users` from Datagen is an append-only stream, so first key it into a lookup table that keeps the latest row per user using a [materialized table](https://docs.confluent.io/cloud/current/flink/reference/statements/create-materialized-table.html):
 
    ```sql
    CREATE MATERIALIZED TABLE users_keyed (
@@ -100,7 +114,7 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
 > [!TIP]
 > A **materialized table** bundles a table and its continuous query into one object — define it once, with no separate `INSERT INTO` to manage. Better yet, you can evolve its logic in place with `CREATE OR ALTER MATERIALIZED TABLE` (change the query, add columns) instead of tearing statements down and rebuilding them.
 
-5. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
+8. Enrich each trade with its user's region and gender using a temporal join, and store the result to a `trades_enriched` topic that the next lab will forecast on:
 
    ```sql
    CREATE MATERIALIZED TABLE trades_enriched AS
@@ -117,7 +131,7 @@ With trades and customer data now streaming, use Flink SQL to answer the two bus
      ON t.userid = u.userid;
    ```
 
-6. Query the enriched stream to confirm each trade now carries its customer's region and gender:
+9. Query the enriched stream to confirm each trade now carries its customer's region and gender:
 
    ```sql
    SELECT * FROM trades_enriched;
